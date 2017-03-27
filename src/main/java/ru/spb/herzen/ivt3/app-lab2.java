@@ -1,79 +1,65 @@
 package ru.spb.herzen.ivt3;
 
-import org.kohsuke.randname.RandomNameGenerator;
 
 public class App
 {
     public static void main( String[] args )
     {
-        RandomNameGenerator rand = new RandomNameGenerator(0); // 0 is random seed
-
-        String[] array = new String[15];
-
-        System.out.println("Задание 1");
-        for(int i=0; i<15; i++){
-             name = rand.next();
-            array[i] = name;
-        }
-        for(String tmp : array){
-            System.out.println("Hello, " + tmp);
-        }
-
-
-        System.out.println("Задание 2");
-        Arrays.sort(array);
-        for(String tmp : array){
-            System.out.println("Hello, " + tmp);
-        }
-
-
-        System.out.println("Задание 3");
-        for(int i=2; i<5; i++){
-            System.out.println("Hello, " + array[i]);
-        }
-
-
-        System.out.println("Задание 4");
-        for(int i=0; i<15; i++){
-            array[i] = array[i].toUpperCase();
-        }
-        for(int i=0; i<15; i++){
-            System.out.println("Hello, " + array[i]);
-        }
-
-        System.out.println("Задание 5");
-        for(int i=0; i<15; i++){
-            array[i] = array[i].toUpperCase();
-        }
-        for(int i=0; i<15; i++){
-            System.out.println("Hello, " + array[i]);
-        }
-
-       
-        System.out.println("Задание 6");
-        int[] num_array = new int[30];
-
-        for(int i=0; i<15; i++){
-            String name = rand.next();
-            num_array[i] = (int) Math.floor(Math.random()*201);
-        }
-        int count = 0;
-        for(int i=0; i<15; i++){
-            if(num_array[i]%2==0){
-                count++;
+        FirstThread firstThread = new FirstThread(new SecondThread());
+        firstThread.start();
+    }
+}
+       class FirstThread extends Thread {
+    private SecondThread secondThread;
+    public FirstThread(SecondThread secondThread) {
+        this.secondThread = secondThread;
+        this.secondThread.start();
+    }
+    @Override
+    public void run() {
+        while(this.secondThread.isWorks()) {
+            System.out.println("SectondThread is alive!");
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                break;
             }
-            System.out.println(i + " : " + num_array[i]);
         }
-        System.out.println("Amount of even numbers: " + count);
+    }
+}
 
+class SecondThread extends Thread {
+    private boolean completed;
 
-        System.out.println("Задание 7");
-        String my_name = "Anastasia";
-        char[] char_array = my_name.toCharArray();
-        Arrays.sort(char_array);
-        for(char x : char_array){
-            System.out.println(x);
+    public SecondThread() {
+        this.completed = true;
+    }
+    public boolean isWorks() {
+        return this.completed;
+    }
+    public void endWorks() {
+        this.completed = false;
+    }
+    @Override
+    public void run()
+    {
+        int rnd = 100000000 + (int) (Math.random() * ((999999999 - 100000000) + 1));
+        boolean prime = false;
+        for (int i = 1; i < Math.sqrt(rnd); i++) {
+            if (rnd % i == 0) {
+                prime = true;
+            }
+            try {
+                Thread.sleep(5);
+            } catch (Exception e) {
+
+            }
         }
+        if(prime)
+            System.out.println(rnd + " является простым числом.");
+        else
+            System.out.println(rnd + " является сложным числом.");
+        this.endWorks();
+    }
+}
 
-        
-       
