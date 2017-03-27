@@ -11,8 +11,8 @@ public class MainThree extends Thread {
         MainThree r = new MainThree();
         Thread first = new Thread(r);
         Thread second = new Thread(r);
-        first.setName("Pavel");
-        second.setName("Tatiana");
+        first.setName("one");
+        second.setName("two");
         first.start();
         second.start();
     }
