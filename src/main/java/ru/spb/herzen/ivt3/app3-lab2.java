@@ -1,4 +1,4 @@
-package ru.spb.herzen.three;
+package ru.spb.herzen;
 
 import java.util.Random;
 
